@@ -1,0 +1,18 @@
+const actionsTypes = {
+    TEST_MESSAGE: "TEST_MESSAGE",
+
+    // menu
+    STORE_INIT: 'STORE_INIT',
+    GET_MENUS: 'GET_MENUS',
+    CREATE_MENU: 'CREATE_MENU',
+    GET_MENU: 'GET_MENU',
+    DELETE_MENU: 'DELETE_MENU',
+    UPDATE_MENU: 'UPDATE_MENU',
+    DELETE_MENU_IMAGE: 'DELETE_MENU_IMAGE',
+    
+    // socket
+    SERVER_MESSAGE: "SERVER_MESSAGE",
+    SERVER_RESPONSE_TIME: "SERVER_RESPONSE_TIME"
+}
+
+export default actionsTypes;
