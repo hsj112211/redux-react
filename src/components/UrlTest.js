@@ -1,5 +1,8 @@
 import React,{ useEffect, useState } from 'react';
 
+/**
+ * 현재 url의 querystring을 가져와서 페이지 띄워보기
+ */
 const UrlTest = (props) => {
     const urlParams = props.match.url.split('/');
     const [isTrue, setIsTrue] = useState(urlParams[2] && urlParams[2] === 'Y' ? true : false);
