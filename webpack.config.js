@@ -1,24 +1,32 @@
-const path = require('path')                                        
-const HtmlWebpackPlugin = require('html-webpack-plugin')            
+const path = require('path')
+const HtmlWebpackPlugin = require('html-webpack-plugin')
 
-module.exports = {                                      
+module.exports = {
     entry: {
         app: ['babel-polyfill', './src/index.js']
-    },                            
-    output: {      
+    },
+    output: {
         path: path.resolve(__dirname, 'dist/'),
         filename: 'index_bundle.js',
         publicPath: '/'
     },
-    module: {                                           
+    module: {
         rules: [
+            // js rule
             {
-                test: /\.js$/,                          
-                exclude: /node_module/,                 
+                test: /\.js$/,
+                exclude: /node_module/,
                 use:{
-                    loader: 'babel-loader'				
+                    loader: 'babel-loader'
                 }
             },
+            // file loader rule
+            {
+                test: /\.(gif|svg|jpg|jpeg|png)/,
+                use: {
+                    loader: "file-loader"
+                }
+            }
         ]
     },
     devServer: {
@@ -27,7 +35,7 @@ module.exports = {
     },
     plugins: [
         new HtmlWebpackPlugin({
-            template: './public/index.html'                
+            template: './public/index.html'
         }),
     ],
 }

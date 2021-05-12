@@ -1,3 +1,6 @@
+/* eslint-disable react/no-unescaped-entities */
+/* eslint-disable react/button-has-type */
+/* eslint-disable react/no-array-index-key */
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import socketIOClient from 'socket.io-client';
@@ -10,7 +13,7 @@ const MessageBox = styled.div`
     height: 400px;
 `;
 const Textarea = styled.textarea`
-    background-color: pink; 
+    background-color: pink;
     width: 500px;
     height: 80px;
 `;
@@ -18,11 +21,11 @@ const Textarea = styled.textarea`
 const END_POINT = "http://127.0.0.1:4001";
 
 const Socket = () => {
-   const dispatch = useDispatch();
+   const dispatch =  useDispatch();
    const serverResponseTime = useSelector(state => state.socket.serverResponseTime);
    const [inputMessage, setInputMessage] = useState("");
    const fromServerMessage = useSelector(state => state.socket.fromServerMessage);
-   const [isClick, setIsClick] = useState(false); 
+   const [isClick, setIsClick] = useState(false);
 
 
    const socket = socketIOClient(END_POINT);
@@ -50,7 +53,7 @@ const Socket = () => {
                 It's <time dateTime={serverResponseTime}>{serverResponseTime}</time>
             </p>
             <hr />
-            
+
            <MessageBox>
                 {
                     fromServerMessage.map((item ,index) => {
@@ -60,11 +63,11 @@ const Socket = () => {
                     })
                 }
             </MessageBox>
-            
+
             <Textarea onChange={(e) => textAreaHandler(e)}>
-                {inputMessage}    
-            </Textarea> 
-            <button onClick={() => saveMessage()}>전송</button> 
+                {inputMessage}
+            </Textarea>
+            <button onClick={() => saveMessage()}>전송</button>
        </div>
    )
 }

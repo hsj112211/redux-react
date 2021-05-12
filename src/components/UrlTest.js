@@ -1,3 +1,6 @@
+/* eslint-disable react/destructuring-assignment */
+/* eslint-disable react/button-has-type */
+/* eslint-disable react/prop-types */
 import React,{ useEffect, useState } from 'react';
 
 /**
@@ -5,7 +8,7 @@ import React,{ useEffect, useState } from 'react';
  */
 const UrlTest = (props) => {
     const urlParams = props.match.url.split('/');
-    const [isTrue, setIsTrue] = useState(urlParams[2] && urlParams[2] === 'Y' ? true : false);
+    const [isTrue, setIsTrue] = useState(!!(urlParams[2] && urlParams[2] === 'Y'));
     const isTrueBtn = () => {
         setIsTrue(!isTrue);
     }
@@ -20,8 +23,8 @@ const UrlTest = (props) => {
             </div>
             <div>
                 {
-                    isTrue === true ? 
-                    <div> True 입니다. </div> : 
+                    isTrue === true ?
+                    <div> True 입니다. </div> :
                     <div> False 입니다. </div>
                 }
             </div>

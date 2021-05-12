@@ -10,10 +10,10 @@ const Menu = () => {
     const testMessage = useSelector(state => state.menu.testMessage);
     const menuList = useSelector(state => state.menu.menuList);
     const isSuccess = useSelector(state => state.menu.isSuccess);
-    
+
     useEffect(() => {
        dispatch(setTestMessage('메뉴를 선택해 주세요.'))
-       dispatch(getMenus());
+       dispatch(    getMenus());
        if(isSuccess){
         dispatch(storeInit());
        }
@@ -39,10 +39,10 @@ const Menu = () => {
                 </thead>
                 <tbody>
                     {
-                        menuList.length > 0 ? 
-                        menuList.map((item,index) => {
+                        menuList.length > 0 ?
+                        menuList.map((item) => {
                             return (
-                                <tr key={index} onClick={() => goDetail(item.id)}>
+                                <tr key={item.id} onClick={() => goDetail(item.id)}>
                                     <td>
                                         { item.menu_name }
                                     </td>
@@ -50,7 +50,10 @@ const Menu = () => {
                                         { item.price }
                                     </td>
                                     <td>
-                                        <img src={`http://localhost:1337${item.image_url.url}`} />
+                                        {
+                                            item.image_url ?
+                                            <img src={`http://localhost:1337${item.image_url.url}`} alt=""/> : null
+                                        }
                                     </td>
                                 </tr>
                             )
@@ -58,7 +61,7 @@ const Menu = () => {
                     }
                 </tbody>
             </Table>
-            
+
         </div>
     )
 }

@@ -1,8 +1,11 @@
+/* eslint-disable react/button-has-type */
+/* eslint-disable react/prop-types */
 import React, { useEffect, useState } from 'react';
 import { Table } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router';
 import { getMenu, deleteMenu,deleteMenuImage, updateMenu, storeInit } from '../redux/action/menu'
+
 
 const MenuDetail = (props) => {
     const dispatch = useDispatch();
@@ -31,31 +34,19 @@ const MenuDetail = (props) => {
     const isDelete = useSelector(state => state.menu.isDelete);
     const isImageDeleteSuccess = useSelector(state => state.menu.isImageDeleteSuccess);
 
-    const deleteMenuBtn = (id) => {
-        // dispatch(deleteMenu(id))
-        const deleteImageParams = {
-            id,
-            filename: menu.image_url.hash,
-            ext: menu.image_url.ext
-        }
-        dispatch(deleteMenuImage(deleteImageParams))
+    const deleteMenuBtn = (params) => {
+        dispatch(deleteMenu(params.dataId))
+            if(params.imageId){
+                dispatch(deleteMenuImage(params.imageId))
+            }
     }
 
     // 메뉴 삭제 또는 수정 성공하면 이전 페이지 이동
     useEffect(() => {
-        // 삭제버튼을 누르고 삭제 성공이면 이미지삭제 성공 체크 후 이전화면
-        if(isSuccess && isDelete){
-            if(isImageDeleteSuccess){
-                history.goBack(-1);
-            } else {
-                alert(' Error ! ')
-                return;
-            }
-        // 업데이트를 누르고 성공이면 이전화면
-        } else if (isSuccess && !isDelete){
+        if(isSuccess && isDelete && isImageDeleteSuccess){
             history.goBack(-1);
         }
-    },[isSuccess])
+    },[isSuccess,isDelete,isImageDeleteSuccess])
 
      // 인풋 데이터 핸들러
      const updateHandler = (e) => {
@@ -69,14 +60,13 @@ const MenuDetail = (props) => {
     const [isUpdate, setIsUpdate] = useState(false);
     const updateMenuBtn = () => {
         setIsUpdate(!isUpdate);
-        
+
         if(isUpdate){
-            console.log(copyMenu)
             dispatch(updateMenu(copyMenu));
         }
     }
 
-   
+
 
     return (
         <div>
@@ -86,7 +76,7 @@ const MenuDetail = (props) => {
                         <th>메뉴명</th>
                         <th>가격</th>
                         <th>그림</th>
-                        <th></th>
+                        <th>#</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -99,12 +89,22 @@ const MenuDetail = (props) => {
                             <td>
                                 <input name="price" value={copyMenu.price} disabled={!isUpdate} onChange={e => updateHandler(e)} />
                             </td>
-                            <td><img src={`http://localhost:1337${copyMenu.image_url.url}`} /></td>
+                            <td>
+                                { copyMenu.image_url ?
+                                    <img src={`http://localhost:1337${copyMenu.image_url.url}`} alt=""/> : null
+                                }
+                            </td>
                             <td>
                                 <button onClick={() => updateMenuBtn()}>
                                     { !isUpdate ? "수정" : "수정완료" }
-                                </button> 
-                                <button onClick={() => deleteMenuBtn(copyMenu.id)}>삭제</button>
+                                </button>
+                                <button onClick={() => {
+                                    const deleteParams = {
+                                        dataId: copyMenu.id,
+                                        imageId: copyMenu.image_url ? copyMenu.image_url.id : null
+                                    }
+                                    return deleteMenuBtn(deleteParams)
+                                }}>삭제</button>
                             </td>
                         </tr>
                         ) : null
@@ -114,5 +114,6 @@ const MenuDetail = (props) => {
         </div>
     )
 }
+
 
 export default MenuDetail;

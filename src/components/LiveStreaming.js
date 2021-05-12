@@ -1,7 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import ReactLivestream from 'react-livestream';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
-import Axios from 'axios';
 
   const StyledIframeWrapper = styled.div`
   position: relative;

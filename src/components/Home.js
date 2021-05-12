@@ -1,6 +1,7 @@
+/* eslint-disable react/button-has-type */
 import React, {  useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { createMenu, storeInit } from '../redux/action/menu'
+import { createMenu, storeInit } from '../redux/action/menu';
 
 const Home = () => {
     const dispatch = useDispatch();
@@ -31,7 +32,7 @@ const Home = () => {
         fileReader.readAsDataURL(e.target.files[0])
     };
 
-     
+
     const setInputFormData = (isPreviewRemove) => {
         if(isPreviewRemove) {
             // input form에 있는 파일정보 초기화
@@ -66,11 +67,11 @@ const Home = () => {
          * 1번째: files.inputName 으로 [ files. ]은 필수 입력되어야 한다.
          * 2번째: 업로드 파일데이터 ( e.target.files[0] );
          * 3번째: e.target.files[0].name
-         * 
+         *
          * entry create rule
          * 1. formData key 값은 [ data ] 라는 값으로 필수값이다.
          * 2. formData value는 JSON.stringify()로 변환해야 한다.
-         * 
+         *
          *  reference: https://strapi.io/documentation/developer-docs/latest/development/plugins/upload.html#upload-file-during-entry-creation => Upload file during entry creation Tab
         */
         formData.append('files.image_url', inputData.image_url, inputData.image_url.name);
@@ -78,7 +79,6 @@ const Home = () => {
         dispatch(createMenu(formData));
         dispatch(storeInit());
     }
-
     useEffect(() => {
         if(isSuccess){
             setInputFormData(false);
@@ -102,9 +102,9 @@ const Home = () => {
             </div>
             <div>
                 {
-                    inputData.preview_img_url ? 
+                    inputData.preview_img_url ?
                         <div>
-                            <img src={inputData.preview_img_url} /> 
+                            <img src={inputData.preview_img_url} alt=""/>
                             <button onClick={() => setInputFormData(true)}>사진삭제</button>
                         </div>
                         : null

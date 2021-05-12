@@ -1,3 +1,4 @@
+/* eslint-disable react/button-has-type */
 import React from 'react';
 import { Link, Route, BrowserRouter as Router } from 'react-router-dom';
 import Home from './Home';
@@ -6,11 +7,15 @@ import LiveStreaming from './LiveStreaming';
 import Socket from './Socket';
 import UrlTest from './UrlTest'
 import MenuDetail from './MenuDetail';
+import Login from './Login'
 
 function App() {
   return (
     <Router>
       <header>
+        <Link to="/login">
+          <button>로그인</button>
+        </Link>
         <Link to="/">
           <button>Home</button>
         </Link>
@@ -29,6 +34,7 @@ function App() {
       </header>
       <hr />
       <main>
+        <Route path ="/login" component={Login} />
         <Route exact path="/" component={Home} />
         <Route exact path="/menu" component={Menu} />
         <Route path="/livestream" component={LiveStreaming} />
