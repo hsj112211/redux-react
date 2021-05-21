@@ -1,6 +1,10 @@
 const actionsTypes = {
     TEST_MESSAGE: "TEST_MESSAGE",
 
+    // user
+    USER_AUTHENTICATE: 'USER_AUTHENTICATE',
+    LOGIN_CHECK: 'LOGIN_CHECK',
+
     // menu
     STORE_INIT: 'STORE_INIT',
     GET_MENUS: 'GET_MENUS',
@@ -9,10 +13,6 @@ const actionsTypes = {
     DELETE_MENU: 'DELETE_MENU',
     UPDATE_MENU: 'UPDATE_MENU',
     DELETE_MENU_IMAGE: 'DELETE_MENU_IMAGE',
-    
-    // socket
-    SERVER_MESSAGE: "SERVER_MESSAGE",
-    SERVER_RESPONSE_TIME: "SERVER_RESPONSE_TIME"
 }
 
 export default actionsTypes;

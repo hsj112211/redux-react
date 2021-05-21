@@ -56,7 +56,7 @@ export const deleteMenu = (id) => {
 
 export const updateMenu = (inputData) => {
   return (dispatch) => {
-    axios.put(`http://localhost:1337/menus/${inputData.id}`, inputData).then((res) => {
+    axios.put(`http://localhost:1337/menus/${inputData.id}`, inputData.formData).then((res) => {
       if (res.status === 200) {
         dispatch({ type: actionTypes.UPDATE_MENU, payload: true });
       } else {

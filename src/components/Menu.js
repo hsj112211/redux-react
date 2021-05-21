@@ -13,7 +13,7 @@ const Menu = () => {
 
     useEffect(() => {
        dispatch(setTestMessage('메뉴를 선택해 주세요.'))
-       dispatch(    getMenus());
+       dispatch(getMenus());
        if(isSuccess){
         dispatch(storeInit());
        }
@@ -22,12 +22,14 @@ const Menu = () => {
     const goDetail = (id) => {
         history.push(`/menu/${id}`)
     }
-
+    const checkMenu = (e) => {
+        console.log(e.target.value)
+    }
     return (
         <div>
-            <div>
+            <h2>
                 안녕하세요 메뉴입니다. { testMessage }
-            </div>
+            </h2 >
             <hr />
             <Table striped bordered hover>
                 <thead>
@@ -42,9 +44,10 @@ const Menu = () => {
                         menuList.length > 0 ?
                         menuList.map((item) => {
                             return (
-                                <tr key={item.id} onClick={() => goDetail(item.id)}>
+                                <tr>
                                     <td>
-                                        { item.menu_name }
+                                        <span key={item.id} onClick={() => goDetail(item.id)}> { item.menu_name } </span>
+                                        <input type="checkbox" value={item.id} onClick={(e) => checkMenu(e)}/>
                                     </td>
                                     <td>
                                         { item.price }
@@ -52,7 +55,7 @@ const Menu = () => {
                                     <td>
                                         {
                                             item.image_url ?
-                                            <img src={`http://localhost:1337${item.image_url.url}`} alt=""/> : null
+                                            <img src={`http://localhost:1337${item.image_url[0].url}`} alt=""/> : null
                                         }
                                     </td>
                                 </tr>
@@ -61,7 +64,8 @@ const Menu = () => {
                     }
                 </tbody>
             </Table>
-
+            <hr />
+            <h2>선택한 메뉴</h2>
         </div>
     )
 }

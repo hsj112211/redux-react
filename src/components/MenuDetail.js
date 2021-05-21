@@ -1,6 +1,4 @@
-/* eslint-disable react/button-has-type */
-/* eslint-disable react/prop-types */
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Table } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router';
@@ -11,6 +9,10 @@ const MenuDetail = (props) => {
     const dispatch = useDispatch();
     const history = useHistory();
     const menu = useSelector(state => state.menu.menu);
+
+    const user = useSelector(state => state.user);
+
+    const fileInput = useRef();
 
     // 페이지 첫 진입시 Menu 요청
     useEffect(() => {
@@ -60,12 +62,34 @@ const MenuDetail = (props) => {
     const [isUpdate, setIsUpdate] = useState(false);
     const updateMenuBtn = () => {
         setIsUpdate(!isUpdate);
-
         if(isUpdate){
-            dispatch(updateMenu(copyMenu));
+            console.log(copyMenu)
+            const formData = new FormData();
+            const fieldParam = {
+                menu_name: copyMenu.menu_name,
+                price: copyMenu.price
+            }
+            formData.append('files.image_url', copyMenu.image_url, copyMenu.image_url.name)
+            formData.append('data',JSON.stringify(fieldParam))
+            const updateParam = {
+                id: copyMenu.id,
+                formData
+            }
+            dispatch(updateMenu(updateParam));
         }
     }
 
+    const inputFileChangeHandler = (e) => {
+        const fileReader = new FileReader();
+        fileReader.onloadend = () => {
+            setCopyMenu({
+                ...copyMenu,
+                image_url: e.target.files[0],
+                preview_img_url: fileReader.result
+            })
+        }
+        fileReader.readAsDataURL(e.target.files[0])
+    };
 
 
     return (
@@ -90,18 +114,27 @@ const MenuDetail = (props) => {
                                 <input name="price" value={copyMenu.price} disabled={!isUpdate} onChange={e => updateHandler(e)} />
                             </td>
                             <td>
-                                { copyMenu.image_url ?
-                                    <img src={`http://localhost:1337${copyMenu.image_url.url}`} alt=""/> : null
+                                {
+                                    !isUpdate && copyMenu.image_url ?
+                                    <img src={ `http://localhost:1337${copyMenu.image_url[0].url}` } alt=""/> : null
+                                }
+                                {
+                                    copyMenu.preview_img_url ?
+                                    <img src={copyMenu.preview_img_url} />: null
+                                }
+                                {
+                                    isUpdate ?
+                                    <input type="file" name="image_url" ref={fileInput} onChange={(e) => inputFileChangeHandler(e)}/> : null
                                 }
                             </td>
                             <td>
                                 <button onClick={() => updateMenuBtn()}>
-                                    { !isUpdate ? "수정" : "수정완료" }
+                                    { isUpdate ?  "수정완료" : "수정" }
                                 </button>
                                 <button onClick={() => {
                                     const deleteParams = {
                                         dataId: copyMenu.id,
-                                        imageId: copyMenu.image_url ? copyMenu.image_url.id : null
+                                        imageId: copyMenu.image_url ? copyMenu.image_url[0].id : null
                                     }
                                     return deleteMenuBtn(deleteParams)
                                 }}>삭제</button>

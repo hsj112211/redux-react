@@ -1,18 +1,19 @@
-/* eslint-disable react/button-has-type */
 import React from 'react';
-import { Link, Route, BrowserRouter as Router } from 'react-router-dom';
+import { Link, Route, BrowserRouter as Router, Switch } from 'react-router-dom';
 import Home from './Home';
 import Menu from './Menu';
-import LiveStreaming from './LiveStreaming';
-import Socket from './Socket';
-import UrlTest from './UrlTest'
 import MenuDetail from './MenuDetail';
-import Login from './Login'
+import Login from './Login';
+import LineLoginCallback from './LineLoginCallback';
+import PrivateRoute from './PrivateRoute';
+import PublicRoute from './PublicRoute';
+import {  useSelector } from 'react-redux';
+import Query from './Query';
 
 function App() {
+  const user = useSelector(state => state.user);
   return (
     <Router>
-      <header>
         <Link to="/login">
           <button>로그인</button>
         </Link>
@@ -22,26 +23,18 @@ function App() {
         <Link to="/menu">
           <button>Menu</button>
         </Link>
-        <Link to="/livestream">
-          <button>Live Streaming</button>
+        <Link to="/query">
+          <button>Query</button>
         </Link>
-        <Link to="/socket">
-          <button>Socket</button>
-        </Link>
-        <Link to="/urltest">
-          <button>Url Test</button>
-        </Link>
-      </header>
       <hr />
-      <main>
-        <Route path ="/login" component={Login} />
-        <Route exact path="/" component={Home} />
-        <Route exact path="/menu" component={Menu} />
-        <Route path="/livestream" component={LiveStreaming} />
-        <Route path="/socket" component={Socket} />
-        <Route path="/urltest/:isTrue" component={UrlTest} />
-        <Route path="/menu/:id" component={MenuDetail} />
-      </main>
+        <Switch>
+          <PrivateRoute exact path="/" isAuthenticated={user.isAuth} component={Home} />
+          <PrivateRoute exact path="/menu" isAuthenticated={user.isAuth} component={Menu} />
+          <PrivateRoute exact path="/menu/:id" isAuthenticated={user.isAuth} component={MenuDetail} />
+          <PrivateRoute exact path="/query" isAuthenticated={user.isAuth} component={Query} />
+          <PublicRoute exact path="/login" isAuthenticated={user.isAuth} component={Login} />
+        </Switch>
+        <Route path="/auth/line/callback" component={LineLoginCallback} />
     </Router>
   );
 }
