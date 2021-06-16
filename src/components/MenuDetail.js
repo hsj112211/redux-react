@@ -75,6 +75,7 @@ const MenuDetail = (props) => {
                 id: copyMenu.id,
                 formData
             }
+            // 아 부분에서 먼저 이미지삭제 디스패치 호출
             dispatch(updateMenu(updateParam));
         }
     }
